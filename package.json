@@ -1,0 +1,20 @@
+{
+  "name": "passvault",
+  "version": "1.0.0",
+  "description": "Personal Password Generator &amp; Vault Intended to be Used in Local Desktop Systems",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmetkasif/passvault.git"
+  },
+  "author": "ahmetkasif",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ahmetkasif/passvault/issues"
+  },
+  "homepage": "https://github.com/ahmetkasif/passvault#readme"
+}
