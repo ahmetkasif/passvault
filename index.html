@@ -29,41 +29,38 @@
     </nav>
     <!-- Şifreler Tablosu -->
     <div class="row">
-      <div class="col-md">
+      <div class="col-md mv1">
         <div class="card">
           <div class="card-header bg-primary text-light">
             Şifreler Tablosu
           </div>
           <div class="card-body">
-            <form autocomplete="off" class="form-inline float-right">
-              <div class="form-group autocomplete">
-                <input id="search" type="text" name="search" class="form-control mx-sm-3 float-right" placeholder="Ara">
+            <div class="row">
+              <div class="col-md">
+                <form autocomplete="off" class="form-inline float-right">
+                  <div class="form-group autocomplete">
+                    <input id="search" type="text" name="search" class="form-control mx-sm-3 float-right" placeholder="Ara">
+                  </div>
+                </form>
               </div>
-            </form>
-            <table class="table table-bordered">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Şifre Adı</th>
-                  <th scope="col">Oluşturulduğu Tarih</th>
-                  <th scope="col">Şifre</th>
-                  <th scope="col">İşlemler</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td scope="col">#</td>
-                  <td scope="col">Google Hesabı (demo@gmail.com)</td>
-                  <td scope="col">10.02.2018</td>
-                  <td scope="col">********</td>
-                  <td scope="col">
-                    <button id="password-update-ID" type="submit" class="btn btn-success">Güncelle</button> |
-                    <button id="password-remove-ID" type="submit" class="btn btn-danger">Sil</button>
-                  </td>
-                </tr>
-                <script src="passwords.js"></script>
-              </tbody>
-            </table>
+            </div>
+            <div class="row mv1">
+              <div class="col-md">
+                <table class="table table-bordered">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Şifre Adı</th>
+                      <th scope="col">Oluşturulduğu Tarih</th>
+                      <th scope="col">Şifre</th>
+                      <th scope="col">İşlemler</th>
+                    </tr>
+                  </thead>
+                  <tbody id="passwordTable">
+                  </tbody>
+                </table>
+              </div>
+            </div>
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
                 <li class="page-item">
@@ -89,7 +86,7 @@
     </div>
     <!-- Şifre Üretme Formu -->
     <div class="row">
-      <div class="col-md">
+      <div class="col-md mv1">
         <div class="card">
           <div class="card-header bg-success text-light">
             Şifre Üretme Formu
@@ -123,7 +120,7 @@
                   <label class="form-check-label" for="inlineRadio3">Sadece Rakam</label>
                 </div>
               </div>
-              <button id="password-create" type="submit" class="btn btn-info float-right">Şifre Üret</button>
+              <button id="password-create" type="button" class="btn btn-info float-right" onclick="createPassword()">Şifre Üret</button>
             </form>
           </div>
         </div>
@@ -131,7 +128,7 @@
     </div>
     <!-- şifrelerim -->
     <div class="row">
-      <div class="col-md">
+      <div class="col-md mv1">
         <div class="card">
           <div class="card-header bg-warning text-light">
             Bilgilerim
@@ -154,12 +151,12 @@
                 <label for="phone-mobile">Cep Telefon Numaranız</label>
                 <input type="text" class="form-control" id="phone-mobile" placeholder="Cep Telefon Numaranız">
               </div>
-              <button id="personal-info-update" type="submit" class="btn btn-info float-right">Güncelle</button>
+              <button id="personal-info-update" type="button" class="btn btn-info float-right" onclick="personalInfoUpdate()">Güncelle</button>
             </form>
           </div>
         </div>
       </div>
-      <div class="col-md">
+      <div class="col-md mv1">
         <div class="card">
           <div class="card-header bg-danger text-light">
             Giriş Bilgilerini Güncelle
@@ -185,16 +182,14 @@
                 <label for="repassword">Şifreniz (Tekrar)</label>
                 <input type="password" class="form-control" id="repassword" placeholder="Şifreniz">
               </div>
-              <button id="user-info-update" type="submit" class="btn btn-info float-right">Güncelle</button>
+              <button id="user-info-update" type="button" class="btn btn-info float-right" onclick="userInfoUpdate()">Güncelle</button>
             </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script>
-    autocomplete(document.getElementById("search"), countries);
-  </script>
+  <script src="passwords.js"></script>
   <script src="node_modules/jquery/dist/jquery.js"></script>
   <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -1,5 +1,78 @@
 var countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua &amp; Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia &amp; Herzegovina", "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central Arfrican Republic", "Chad", "Chile", "China", "Colombia", "Congo", "Cook Islands", "Costa Rica", "Cote D Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland", "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauro", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre &amp; Miquelon", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "St Kitts &amp; Nevis", "St Lucia", "St Vincent", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad &amp; Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks &amp; Caicos", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
 
+var Datastore = require('nedb'),
+    db = new Datastore({
+        filename: 'data/database.db',
+        autoload: true
+    });
+
+let deneme;
+
+function personalInfoUpdate() {
+    console.log("personal info update");
+};
+
+function userInfoUpdate() {
+    console.log("user info update");
+};
+
+function createPassword() {
+    console.log("password create");
+    var pw = {
+        userId: 1,
+        username: 'ahmet',
+        password: '13g4t1v2',
+        length: 8,
+        createdAt: new Date(),
+    };
+
+    console.log(pw);
+
+    db.insert(pw, function (err, newDoc) { // Callback is optional
+        // newDoc is the newly inserted document, including its _id
+        // newDoc has no key called notToBeSaved since its value was undefined
+    });
+    loadPasswords();
+};
+
+function updatePassword() {
+    console.log("password update");
+};
+
+function deletePassword(id) {
+    db.remove({
+        _id: id
+    }, {}, function (err, numRemoved) {
+        console.log("entry removed");
+    });
+    loadPasswords();
+};
+
+function loadPasswords() {
+    var i = 0;
+    var data = '';
+    db.find({
+        username: 'ahmet'
+    }, function (err, docs) {
+        docs.forEach(doc => {
+            i = i + 1;
+            data += "<tr>";
+            data += "<td scope='col'>" + i + "</td>";
+            data += "<td scope='col'>" + doc.username + "</td>";
+            data += "<td scope='col'>" + doc.createdAt + "</td>";
+            data += "<td scope='col'>" + doc.password + "</td>";
+            data += "<td scope='col'><button type='button' class='btn btn-info' onclick=updatePassword('";
+            data += doc._id;
+            data += "')>Güncelle</button></td>";
+            data += "<td scope='col'><button type='button' class='btn btn-danger' onclick=deletePassword('";
+            data += doc._id;
+            data += "')>Sil</button></td>";
+            data += "</tr>";
+        });
+        document.getElementById("passwordTable").innerHTML = data;
+    });
+};
+
 function autocomplete(inp, arr) {
     /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
@@ -9,7 +82,9 @@ function autocomplete(inp, arr) {
         var a, b, i, val = this.value;
         /*close any already open lists of autocompleted values*/
         closeAllLists();
-        if (!val) { return false; }
+        if (!val) {
+            return false;
+        }
         currentFocus = -1;
         /*create a DIV element that will contain the items (values):*/
         a = document.createElement("DIV");
@@ -65,6 +140,7 @@ function autocomplete(inp, arr) {
             }
         }
     });
+
     function addActive(x) {
         /*a function to classify an item as "active":*/
         if (!x) return false;
@@ -75,12 +151,14 @@ function autocomplete(inp, arr) {
         /*add class "autocomplete-active":*/
         x[currentFocus].classList.add("autocomplete-active");
     }
+
     function removeActive(x) {
         /*a function to remove the "active" class from all autocomplete items:*/
         for (var i = 0; i < x.length; i++) {
             x[i].classList.remove("autocomplete-active");
         }
     }
+
     function closeAllLists(elmnt) {
         /*close all autocomplete lists in the document,
         except the one passed as an argument:*/
@@ -96,3 +174,6 @@ function autocomplete(inp, arr) {
         closeAllLists(e.target);
     });
 }
+
+autocomplete(document.getElementById("search"), search);
+loadPasswords();
