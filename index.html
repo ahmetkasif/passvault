@@ -53,7 +53,8 @@
                       <th scope="col">Şifre Adı</th>
                       <th scope="col">Oluşturulduğu Tarih</th>
                       <th scope="col">Şifre</th>
-                      <th scope="col">İşlemler</th>
+                      <th scope="col">Güncelle</th>
+                      <th scope="col">Sil</th>
                     </tr>
                   </thead>
                   <tbody id="passwordTable">
@@ -99,16 +100,12 @@
               </div>
               <div class="form-group">
                 <label for="password-length">Şifre Uzunluğu</label>
-                <input type="text" class="form-control" id="password-length" placeholder="Şifre Uzunluğu">
+                <input type="number" class="form-control" id="password-length" placeholder="Şifre Uzunluğu">
               </div>
               <div class="form-group">
-                <label for="phone-mobile">Cep Telefon Numaranız</label>
-                <input type="text" class="form-control" id="phone-mobile" placeholder="Cep Telefon Numaranız">
-              </div>
-              <div class="form-group">
-                <p class="col-form-label">Radios</p>
+                <p class="col-form-label">Şifre Tipi</p>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="password-type" id="password-type-1" value="1">
+                  <input class="form-check-input" type="radio" name="password-type" id="password-type-1" value="1" >
                   <label class="form-check-label" for="inlineRadio1">Harf, Rakam ve Semboller</label>
                 </div>
                 <div class="form-check form-check-inline">
@@ -148,8 +145,8 @@
                 <input type="text" class="form-control" id="city" placeholder="Şehriniz">
               </div>
               <div class="form-group">
-                <label for="phone-mobile">Cep Telefon Numaranız</label>
-                <input type="text" class="form-control" id="phone-mobile" placeholder="Cep Telefon Numaranız">
+                <label for="phone">Telefon</label>
+                <input type="text" class="form-control" id="phone" placeholder="Telefon Numaranız">
               </div>
               <button id="personal-info-update" type="button" class="btn btn-info float-right" onclick="personalInfoUpdate()">Güncelle</button>
             </form>
@@ -162,13 +159,10 @@
             Giriş Bilgilerini Güncelle
           </div>
           <div class="card-body">
-            <form class="needs-validation" novalidate>
+            <form>
               <div class="form-group">
                 <label for="username">Kullanıcı Adı</label>
                 <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Kullanıcı Adınız">
-                <div class="valid-feedback">
-                  Looks good!
-                </div>
               </div>
               <div class="form-group">
                 <label for="email">E-Posta Adresiniz</label>

@@ -9,7 +9,43 @@ var Datastore = require('nedb'),
 let deneme;
 
 function personalInfoUpdate() {
-    console.log("personal info update");
+    var pInfo = {
+        type: 0,
+        name: document.getElementById("name").value,
+        surname: document.getElementById("surname").value,
+        city: document.getElementById("city").value,
+        phone: document.getElementById("phone").value,
+        createdAt: new Date(),
+    };
+
+    db.count({ name: pInfo.name }, function (err, count) {
+        if (count > 0) {
+            db.update({ name: pInfo.name }, { $set: { name: pInfo.name, surname: pInfo.surname, city: pInfo.city, phone: pInfo.phone } }, function (err, numReplaced) {
+                console.log("Update successfull, affected entries: " + numReplaced);
+            });
+            loadPInfo();
+        } else {
+            db.insert(pInfo, function (err, newDoc) {
+                console.log("Insert successfull.");
+            });
+            loadPInfo();
+        }
+    });
+};
+
+
+
+function loadPInfo() {
+    db.find({
+        type: 0
+    }, function (err, docs) {
+        if (docs.length > 0) {
+            document.getElementById("name").value = docs[0].name;
+            document.getElementById("surname").value = docs[0].surname;
+            document.getElementById("city").value = docs[0].city;
+            document.getElementById("phone").value = docs[0].phone;
+        }
+    });
 };
 
 function userInfoUpdate() {
@@ -18,8 +54,8 @@ function userInfoUpdate() {
 
 function createPassword() {
     console.log("password create");
+
     var pw = {
-        userId: 1,
         username: 'ahmet',
         password: '13g4t1v2',
         length: 8,
@@ -176,4 +212,5 @@ function autocomplete(inp, arr) {
 }
 
 autocomplete(document.getElementById("search"), search);
+loadPInfo();
 loadPasswords();
