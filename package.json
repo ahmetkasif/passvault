@@ -1,10 +1,13 @@
 {
   "name": "passvault",
-  "version": "1.0.0",
+  "version": "0.4.1",
   "description": "Personal Password Generator &amp; Vault Intended to be Used in Local Desktop Systems",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "postinstall": "install-app-deps",
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "repository": {
     "type": "git",
@@ -18,12 +21,42 @@
   "homepage": "https://github.com/ahmetkasif/passvault#readme",
   "dependencies": {
     "bootstrap": "^4.1.3",
-    "electron": "^2.0.7",
     "jquery": "^3.3.1",
     "less": "^3.8.1",
     "moment": "^2.22.2",
     "nedb": "^1.8.0",
     "popper.js": "^1.14.4",
     "sha.js": "^2.4.11"
+  },
+  "build": {
+    "appId": "net.ahmetkasif.passvault",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
+  },
+  "devDependencies": {
+    "electron": "latest",
+    "electron-builder": "^20.28.1"
   }
 }
