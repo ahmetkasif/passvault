@@ -44,14 +44,18 @@
                 </form>
               </div>
             </div>
+            <hr>
             <div class="row mv1">
               <div class="col-md">
                 <table class="table table-bordered">
                   <thead class="thead-light">
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">Şifre Adı</th>
+                      <th scope="col">İsim</th>
+                      <th scope="col">Tip</th>
+                      <th scope="col">Uzunluk</th>
                       <th scope="col">Oluşturulduğu Tarih</th>
+                      <th scope="col">Güncellendiği Tarih</th>
                       <th scope="col">Şifre</th>
                       <th scope="col">Güncelle</th>
                       <th scope="col">Sil</th>
@@ -62,6 +66,7 @@
                 </table>
               </div>
             </div>
+            <hr>
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
                 <li class="page-item">
@@ -85,50 +90,12 @@
         </div>
       </div>
     </div>
-    <!-- Şifre Üretme Formu -->
-    <div class="row">
-      <div class="col-md mv1">
-        <div class="card">
-          <div class="card-header bg-success text-light">
-            Şifre Üretme Formu
-          </div>
-          <div class="card-body">
-            <form>
-              <div class="form-group">
-                <label for="password-name">Şifre Adı</label>
-                <input type="text" class="form-control" id="password-name" placeholder="Şifre Adı">
-              </div>
-              <div class="form-group">
-                <label for="password-length">Şifre Uzunluğu</label>
-                <input type="number" class="form-control" id="password-length" placeholder="Şifre Uzunluğu">
-              </div>
-              <div class="form-group">
-                <p class="col-form-label">Şifre Tipi</p>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="password-type" id="password-type-1" value="1" >
-                  <label class="form-check-label" for="inlineRadio1">Harf, Rakam ve Semboller</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="password-type" id="password-type-1" value="2">
-                  <label class="form-check-label" for="inlineRadio2">Harf ve Rakam</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="password-type" id="password-type-1" value="3">
-                  <label class="form-check-label" for="inlineRadio3">Sadece Rakam</label>
-                </div>
-              </div>
-              <button id="password-create" type="button" class="btn btn-info float-right" onclick="createPassword()">Şifre Üret</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- şifrelerim -->
     <div class="row">
       <div class="col-md mv1">
         <div class="card">
           <div class="card-header bg-warning text-light">
-            Bilgilerim
+            Özet Formu
           </div>
           <div class="card-body">
             <form>
@@ -148,11 +115,33 @@
                 <label for="phone">Telefon</label>
                 <input type="text" class="form-control" id="phone" placeholder="Telefon Numaranız">
               </div>
-              <button id="personal-info-update" type="button" class="btn btn-info float-right" onclick="personalInfoUpdate()">Güncelle</button>
+              <div class="form-group">
+                <label for="master-password">Ana Şifre</label>
+                <input type="password" class="form-control" id="master-password" placeholder="Ana Şifre">
+              </div>
+              <div class="form-group">
+                <label for="hash">Oluşturulan Tarih</label>
+                <input type="text" readonly class="form-control-plaintext" id="createdAt">
+              </div>
+              <div class="form-group">
+                <label for="hash">Güncellenen Tarih</label>
+                <input type="text" readonly class="form-control-plaintext" id="updatedAt">
+              </div>
+              <div class="form-group">
+                <label for="hash">Özet Değeri</label>
+                <input type="text" readonly class="form-control-plaintext" id="hash">
+              </div>
+              <button id="personal-info-update" type="button" class="btn btn-info float-right" onclick="personalInfoUpdate()">
+                Özet Hesapla
+              </button>
+              <button id="personal-info-reset" type="button" class="btn btn-warning float-right" onclick="personalInfoReset()">
+                Sıfırla
+              </button>
             </form>
           </div>
         </div>
       </div>
+      <!--
       <div class="col-md mv1">
         <div class="card">
           <div class="card-header bg-danger text-light">
@@ -177,6 +166,47 @@
                 <input type="password" class="form-control" id="repassword" placeholder="Şifreniz">
               </div>
               <button id="user-info-update" type="button" class="btn btn-info float-right" onclick="userInfoUpdate()">Güncelle</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    -->
+    </div>
+    <!-- Şifre Üretme Formu -->
+    <div class="row">
+      <div class="col-md mv1">
+        <div class="card">
+          <div class="card-header bg-success text-light">
+            Şifre Üretme Formu
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label for="password-name">Şifre Adı</label>
+                <input type="text" class="form-control" id="password-name" placeholder="Şifre Adı">
+              </div>
+              <div class="form-group">
+                <label for="password-length">Şifre Uzunluğu</label>
+                <input type="number" class="form-control" id="password-length" placeholder="Şifre Uzunluğu">
+              </div>
+              <div class="form-group" id="password-type">
+                <p class="col-form-label">Şifre Tipi</p>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="password-type" id="password-type-1" value="1">
+                  <label class="form-check-label" for="password-type-1">Harf, Rakam ve Semboller</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="password-type" id="password-type-2" value="2">
+                  <label class="form-check-label" for="password-type-2">Harf ve Rakam</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="password-type" id="password-type-3" value="3">
+                  <label class="form-check-label" for="password-type-3">Sadece Rakam</label>
+                </div>
+              </div>
+              <button id="password-create" type="button" class="btn btn-info float-right" onclick="createPassword()">Şifre
+                Üret
+              </button>
             </form>
           </div>
         </div>

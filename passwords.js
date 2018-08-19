@@ -1,3 +1,8 @@
+var shajs = require('sha.js')
+var $ = require('jquery');
+var moment = require('moment');
+moment.locale('tr');
+
 var countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua &amp; Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia &amp; Herzegovina", "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central Arfrican Republic", "Chad", "Chile", "China", "Colombia", "Congo", "Cook Islands", "Costa Rica", "Cote D Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland", "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauro", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre &amp; Miquelon", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "St Kitts &amp; Nevis", "St Lucia", "St Vincent", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad &amp; Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks &amp; Caicos", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
 
 var Datastore = require('nedb'),
@@ -9,31 +14,42 @@ var Datastore = require('nedb'),
 let deneme;
 
 function personalInfoUpdate() {
-    var pInfo = {
+    var data = {
         type: 0,
         name: document.getElementById("name").value,
         surname: document.getElementById("surname").value,
         city: document.getElementById("city").value,
         phone: document.getElementById("phone").value,
-        createdAt: new Date(),
+        masterPass: document.getElementById("master-password").value,
+        createdAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
+        updatedAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
     };
 
-    db.count({ name: pInfo.name }, function (err, count) {
+    var hashData = data.name.toString() + data.surname.toString() + data.city.toString() + data.phone.toString() + data.masterPass.toString();
+    data.hash = shajs('sha256').update(hashData).digest('hex');
+
+    db.count({ name: data.name }, function (err, count) {
         if (count > 0) {
-            db.update({ name: pInfo.name }, { $set: { name: pInfo.name, surname: pInfo.surname, city: pInfo.city, phone: pInfo.phone } }, function (err, numReplaced) {
+            db.update({ name: data.name }, { $set: { name: data.name, surname: data.surname, city: data.city, phone: data.phone, masterPass: data.masterPass, hash: data.hash, updatedAt: moment().format('MMMM Do YYYY, h:mm:ss a') } }, function (err, numReplaced) {
                 console.log("Update successfull, affected entries: " + numReplaced);
             });
             loadPInfo();
         } else {
-            db.insert(pInfo, function (err, newDoc) {
-                console.log("Insert successfull.");
+            db.insert(data, function (err, newDoc) {
+                console.log("Insertion successfully completed.");
             });
             loadPInfo();
         }
     });
 };
 
-
+function personalInfoReset() {
+    db.remove({
+        type: 0
+    }, {}, function (err, numRemoved) {
+        loadPInfo();
+    });
+};
 
 function loadPInfo() {
     db.find({
@@ -44,6 +60,19 @@ function loadPInfo() {
             document.getElementById("surname").value = docs[0].surname;
             document.getElementById("city").value = docs[0].city;
             document.getElementById("phone").value = docs[0].phone;
+            document.getElementById("master-password").value = docs[0].masterPass;
+            document.getElementById("createdAt").value = docs[0].createdAt;
+            document.getElementById("updatedAt").value = docs[0].updatedAt;
+            document.getElementById("hash").value = docs[0].hash;
+        } else {
+            document.getElementById("name").value = "";
+            document.getElementById("surname").value = "";
+            document.getElementById("city").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("master-password").value = "";
+            document.getElementById("createdAt").value = "";
+            document.getElementById("updatedAt").value = "";
+            document.getElementById("hash").value = "";
         }
     });
 };
@@ -53,22 +82,39 @@ function userInfoUpdate() {
 };
 
 function createPassword() {
-    console.log("password create");
+    db.find({
+        type: 0
+    }, function (err, docs) {
+        var hash;
+        if (docs.length > 0) {
+            if (docs[0].hash != undefined) {
+                var data = {};
+                data.name = document.getElementById("password-name").value;
+                data.type = $("input[name=password-type]:checked").val();
+                data.length = document.getElementById("password-length").value;
 
-    var pw = {
-        username: 'ahmet',
-        password: '13g4t1v2',
-        length: 8,
-        createdAt: new Date(),
-    };
+                var hashData = docs[0].hash + data.name.toString() + data.length.toString() + data.type.toString();
+                data.hash = shajs('sha256').update(hashData).digest('hex');
 
-    console.log(pw);
+                var start = Math.floor(Math.random() * (64 - data.length));
+                var end = start + parseInt(data.length);
+                data.password = data.hash.toString().substring(start, end);
 
-    db.insert(pw, function (err, newDoc) { // Callback is optional
-        // newDoc is the newly inserted document, including its _id
-        // newDoc has no key called notToBeSaved since its value was undefined
+                data.createdAt = moment().format('MMMM Do YYYY, h:mm:ss a');
+                data.updatedAt = moment().format('MMMM Do YYYY, h:mm:ss a');
+
+                db.insert(data, function (err, newDoc) {
+                    console.log("New Password added.");
+                });
+
+                loadPasswords();
+            } else {
+                console.log("Create hash first.");
+            }
+        } else {
+            console.log("Enter your information and create hash first.");
+        }
     });
-    loadPasswords();
 };
 
 function updatePassword() {
@@ -87,17 +133,18 @@ function deletePassword(id) {
 function loadPasswords() {
     var i = 0;
     var data = '';
-    db.find({
-        username: 'ahmet'
-    }, function (err, docs) {
+    db.find({ $or: [{ type: '1' }, { type: '2' }, {type: '3'}] }, function (err, docs) {
         docs.forEach(doc => {
             i = i + 1;
             data += "<tr>";
             data += "<td scope='col'>" + i + "</td>";
-            data += "<td scope='col'>" + doc.username + "</td>";
+            data += "<td scope='col'>" + doc.name + "</td>";
+            data += "<td scope='col'>" + doc.type + "</td>";
+            data += "<td scope='col'>" + doc.length + "</td>";
             data += "<td scope='col'>" + doc.createdAt + "</td>";
+            data += "<td scope='col'>" + doc.updatedAt + "</td>";
             data += "<td scope='col'>" + doc.password + "</td>";
-            data += "<td scope='col'><button type='button' class='btn btn-info' onclick=updatePassword('";
+            data += "<td scope='col'><button type='button' class='btn btn-info disabled' onclick=updatePassword('";
             data += doc._id;
             data += "')>Güncelle</button></td>";
             data += "<td scope='col'><button type='button' class='btn btn-danger' onclick=deletePassword('";
