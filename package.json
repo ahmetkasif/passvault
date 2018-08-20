@@ -1,11 +1,12 @@
 {
   "name": "passvault",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Personal Password Generator &amp; Vault Intended to be Used in Local Desktop Systems",
   "main": "main.js",
   "scripts": {
     "postinstall": "install-app-deps",
     "start": "electron .",
+    "start-mac": "/Applications/Electron.app/Contents/MacOS/Electron .",
     "pack": "build --dir",
     "dist": "build"
   },
@@ -27,6 +28,11 @@
     "nedb": "^1.8.0",
     "popper.js": "^1.14.4",
     "sha.js": "^2.4.11"
+  },
+  "standard": {
+    "globals": [
+      "$"
+    ]
   },
   "build": {
     "appId": "net.ahmetkasif.passvault",

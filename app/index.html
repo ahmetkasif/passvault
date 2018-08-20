@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="tr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Personal Password Generator & Vault Intended to be Used in Local Desktop Systems">
+  <meta name="author" content="ahmetkasif">
+  <title>Passvault</title>
+  <!--<link rel="stylesheet" href="../assets/css/bootstrap.min.css">-->
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/main.less">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <!-- navbar  -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Passvault
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Hakkında</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Şifreler Tablosu -->
+    <div class="row">
+      <div class="col-md mv1">
+        <div class="card">
+          <div class="card-header bg-primary text-light">
+            Şifreler Tablosu
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md">
+                <form autocomplete="off" class="form-inline float-right">
+                  <div class="form-group autocomplete">
+                    <input id="search" type="text" name="search" class="form-control mx-sm-3 float-right" placeholder="Ara">
+                  </div>
+                </form>
+              </div>
+            </div>
+            <hr>
+            <div class="alert alert-info alert-dismissible collapse" role="alert" id="alert">
+              <p id="alert-p"></p>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="row mv1">
+              <div class="col-md">
+                <table class="table table-bordered">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">İsim</th>
+                      <th scope="col">Tip</th>
+                      <th scope="col">Uzunluk</th>
+                      <th scope="col">Oluşturulduğu Tarih</th>
+                      <th scope="col">Güncellendiği Tarih</th>
+                      <th scope="col">Şifre</th>
+                      <th scope="col">Güncelle</th>
+                      <th scope="col">Sil</th>
+                    </tr>
+                  </thead>
+                  <tbody id="passwordTable">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <hr>
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+                <li class="page-item">
+                  <a class="page-link" href="#" tabindex="-1">Önceki</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="#">Sonraki</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- şifrelerim -->
+    <div class="row">
+      <div class="col-md mv1">
+        <div class="card">
+          <div class="card-header bg-warning text-light">
+            Özet Formu
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label for="name">Adınız</label>
+                <input type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Adınız">
+              </div>
+              <div class="form-group">
+                <label for="surname">Soyadınız</label>
+                <input type="text" class="form-control" id="surname" aria-describedby="surnameHelp" placeholder="Soyadınız">
+              </div>
+              <div class="form-group">
+                <label for="city">Yaşadığınız Şehir</label>
+                <input type="text" class="form-control" id="city" placeholder="Şehriniz">
+              </div>
+              <div class="form-group">
+                <label for="phone">Telefon</label>
+                <input type="text" class="form-control" id="phone" placeholder="Telefon Numaranız">
+              </div>
+              <div class="form-group">
+                <label for="master-password">Ana Şifre</label>
+                <input type="password" class="form-control" id="master-password" placeholder="Ana Şifre">
+              </div>
+              <div class="form-group">
+                <label for="hash">Oluşturulan Tarih</label>
+                <input type="text" readonly class="form-control-plaintext" id="createdAt">
+              </div>
+              <div class="form-group">
+                <label for="hash">Güncellenen Tarih</label>
+                <input type="text" readonly class="form-control-plaintext" id="updatedAt">
+              </div>
+              <div class="form-group">
+                <label for="hash">Özet Değeri</label>
+                <input type="text" readonly class="form-control-plaintext" id="hash">
+              </div>
+              <button id="personal-info-update" type="button" class="btn btn-info float-right" onclick="personalInfoUpdate()">
+                Özet Hesapla
+              </button>
+              <button id="personal-info-reset" type="button" class="btn btn-warning float-right" onclick="personalInfoReset()">
+                Sıfırla
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!--
+      <div class="col-md mv1">
+        <div class="card">
+          <div class="card-header bg-danger text-light">
+            Giriş Bilgilerini Güncelle
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label for="username">Kullanıcı Adı</label>
+                <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Kullanıcı Adınız">
+              </div>
+              <div class="form-group">
+                <label for="email">E-Posta Adresiniz</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="E-Postanız">
+              </div>
+              <div class="form-group">
+                <label for="password">Şifreniz</label>
+                <input type="password" class="form-control" id="password" placeholder="Şifreniz">
+              </div>
+              <div class="form-group">
+                <label for="repassword">Şifreniz (Tekrar)</label>
+                <input type="password" class="form-control" id="repassword" placeholder="Şifreniz">
+              </div>
+              <button id="user-info-update" type="button" class="btn btn-info float-right" onclick="userInfoUpdate()">Güncelle</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    -->
+    </div>
+    <!-- Şifre Üretme Formu -->
+    <div class="row">
+      <div class="col-md mv1">
+        <div class="card">
+          <div class="card-header bg-success text-light">
+            Şifre Üretme Formu
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label for="password-name">Şifre Adı</label>
+                <input type="text" class="form-control" id="password-name" placeholder="Şifre Adı">
+              </div>
+              <div class="form-group">
+                <label for="password-length">Şifre Uzunluğu</label>
+                <input type="number" class="form-control" id="password-length" placeholder="Şifre Uzunluğu">
+              </div>
+              <div class="form-group" id="password-type">
+                <p class="col-form-label">Şifre Tipi</p>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="password-type" id="password-type-1" value="1">
+                  <label class="form-check-label" for="password-type-1">Harf, Rakam ve Semboller</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="password-type" id="password-type-2" value="2">
+                  <label class="form-check-label" for="password-type-2">Harf ve Rakam</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="password-type" id="password-type-3" value="3">
+                  <label class="form-check-label" for="password-type-3">Sadece Rakam</label>
+                </div>
+              </div>
+              <button id="password-create" type="button" class="btn btn-info float-right" onclick="createPassword()">Şifre
+                Üret
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="renderer.js"></script>
+<script src="passwords.js"></script>
+
+</html>
