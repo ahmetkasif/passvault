@@ -9,8 +9,6 @@ app.setName(config.name)
 var window = null
 app.on('ready', function () {
   window = new BrowserWindow({
-    width: 1280,
-    height: 720,
     minWidth: 940, 
     minHeight: 600,
     title: config.name,
