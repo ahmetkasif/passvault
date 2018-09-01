@@ -4,11 +4,14 @@ Kişisel kullanım için tasarlanmış, isteğe göre farklı türlerde (liste 1
 **[İndirme Linki](https://github.com/ahmetkasif/passvault/raw/master/installers/PassvaultInstaller.exe)**
 
 ### Liste 1:
+* Sadece harfler
+* Harf-rakam kombinasyonları
 * Harf-rakam-sembol kombinasyonları
-* harf-rakam kombinasyonları
-* Sadece rakamlar (örn. PIN)
+* Benzer karakterleri eleme özelliği
+* Büyük harf kullanabilme özelliği
+* Sadece rakamlar (örn. PIN) (Şu anda mevcut değil)
 
-Proje geliştirilme aşamasındadır, her ne kadar tüm kaynaklar uygulama içerisinden sağlansa ve internet bağlantısı kurulmasa da, **her türlü sorumluluk kullanıcıya aittir**.
+Proje geliştirilme aşamasındadır ve kullanıma uygun değildir. Her ne kadar tüm kaynaklar uygulama içerisinden sağlansa ve internet bağlantısı kurulmasa da, **her türlü sorumluluk kullanıcıya aittir**.
 
 ### Liste 2:
 * electron
@@ -18,6 +21,8 @@ Proje geliştirilme aşamasındadır, her ne kadar tüm kaynaklar uygulama içer
 * moment
 * sha
 * nedb
+* alertifyjs
+* generate-password
 
 ![Screenshot](https://github.com/ahmetkasif/passvault/blob/master/index-shot.PNG)
 
@@ -28,11 +33,14 @@ Cross platform password management service which lets you create passwords in di
 **[Download Here](https://github.com/ahmetkasif/passvault/raw/master/installers/PassvaultInstaller.exe)**
 
 ### List 1:
-* Letter-number-symbol combinations
+* Letter only
 * Letter-number combinations
-* Only numbers (e.g. PIN)
+* Letter-number-symbol combinations
+* Ability to exclude similar characters
+* Ability to allow uppercase letters
+* Only numbers (e.g. PIN) (to be added)
 
-Project is under development, **any responsibility belongs to user**.
+Project is under development and currently not production ready. **Any responsibility belongs to the user**.
 
 ### List 2:
 * electron
@@ -42,3 +50,5 @@ Project is under development, **any responsibility belongs to user**.
 * moment
 * sha
 * nedb
+* alertifyjs
+* generate-password
