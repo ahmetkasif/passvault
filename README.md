@@ -19,6 +19,8 @@ Proje geliştirilme aşamasındadır, her ne kadar tüm kaynaklar uygulama içer
 * sha
 * nedb
 
+![Screenshot](https://github.com/ahmetkasif/passvault/blob/master/index-shot.PNG)
+
 # Passvault (EN)
 
 Cross platform password management service which lets you create passwords in different types (look list 1 below) and stores them in local system in a secure way. Intended for personal usage. Dependencies shown in list 2.
