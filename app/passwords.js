@@ -6,6 +6,10 @@ var alertify = require('alertifyjs');
 
 moment.locale('tr');
 
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
 alertify.defaults = {
     autoReset: true,
     basic: false,
@@ -82,28 +86,30 @@ function createPassword() {
             db.update({
                 name: data.name
             }, {
-                    $set: {
-                        name: data.name,
-                        length: data.length,
-                        numbers: data.numbers,
-                        symbols: data.symbols,
-                        uppercase: data.uppercase,
-                        excludeSimilarCharacters: data.excludeSimilarCharacters,
-                        updatedAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
-                        password: data.password,
-                    }
-                }, function (err, numReplaced) {
-                    resetForm();
-                    loadPasswords();
-                    alertify.notify('Şifre başarıyla güncellendi', 'success');
-                    document.getElementById("password-create").innerText = "Şifre Üret";
-                });
+                $set: {
+                    name: data.name,
+                    length: data.length,
+                    numbers: data.numbers,
+                    symbols: data.symbols,
+                    uppercase: data.uppercase,
+                    excludeSimilarCharacters: data.excludeSimilarCharacters,
+                    updatedAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
+                    password: data.password,
+                }
+            }, function (err, numReplaced) {
+                resetForm();
+                loadPasswords();
+                alertify.notify('Şifre başarıyla güncellendi', 'success');
+                document.getElementById("password-create").innerText = "Şifre Üret";
+            });
         }
     });
 };
 
 function updatePassword(id) {
-    db.findOne({ _id: id }, function (err, doc) {
+    db.findOne({
+        _id: id
+    }, function (err, doc) {
         document.getElementById("password-name").value = doc.name;
         document.getElementById("password-length").value = doc.length;
         document.getElementById("password-type-numbers").checked = doc.numbers;
@@ -115,7 +121,9 @@ function updatePassword(id) {
 };
 
 function resetForm(id) {
-    db.findOne({ _id: id }, function (err, doc) {
+    db.findOne({
+        _id: id
+    }, function (err, doc) {
         document.getElementById("password-name").value = "";
         document.getElementById("password-length").value = "";
         document.getElementById("password-type-numbers").checked = false;
@@ -139,8 +147,7 @@ function deletePassword(id) {
 function loadPasswords() {
     var i = 0;
     var data = '';
-    db.find({
-    }, function (err, docs) {
+    db.find({}, function (err, docs) {
         docs.forEach(doc => {
             i = i + 1;
             data += "<tr>";
@@ -166,7 +173,7 @@ function loadPasswords() {
             data += "<td scope='col'>" + doc.createdAt + "</td>";
             data += "<td scope='col'>" + doc.updatedAt + "</td>";
             data += "<td scope='col'>" + doc.password + "</td>";
-            data += "<td scope='col'><button type='button' class='btn btn-info disabled' onclick=updatePassword('";
+            data += "<td scope='col'><button type='button' class='btn btn-info' onclick=updatePassword('";
             data += doc._id;
             data += "')>Güncelle</button></td>";
             data += "<td scope='col'><button type='button' class='btn btn-danger' onclick=deletePassword('";

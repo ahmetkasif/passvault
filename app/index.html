@@ -7,84 +7,67 @@
   <meta name="description" content="Personal Password Generator & Vault Intended to be Used in Local Desktop Systems">
   <meta name="author" content="ahmetkasif">
   <title>Passvault</title>
-  <!--<link rel="stylesheet" href="../../assets/css/bootstrap.min.css">-->
   <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/css/main.less">
-  <link rel="stylesheet" href="../node_modules/alertifyjs/build/css/alertify.min.css"/>
-  <link rel="stylesheet" href="../node_modules/alertifyjs/build/css/themes/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../node_modules/alertifyjs/build/css/alertify.min.css" />
+  <link rel="stylesheet" href="../node_modules/alertifyjs/build/css/themes/bootstrap.min.css" />
   <script src="../node_modules/alertifyjs/build/alertify.min.js"></script>
 </head>
 
 <body>
+  <!-- navbar  -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Passvault
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">Hakkında</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
   <div class="container-fluid">
-    <!-- navbar  -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Passvault
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Hakkında</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
     <!-- Şifreler Tablosu -->
     <div class="row">
       <div class="col-md mv1">
-        <div class="card">
-          <div class="card-header bg-primary text-light">
-            Şifreler Tablosu
-          </div>
+        <div class="card shadow">
+          <div class="card-header">Kayıtlı Şifreler</div>
           <div class="card-body">
-            <div class="row">
-              <div class="col-md">
-                <form autocomplete="off" class="form-inline float-right">
-                  <div class="form-group autocomplete">
-                    <input id="search" type="text" name="search" class="form-control mx-sm-3 float-right" placeholder="Ara">
-                  </div>
-                </form>
+            <form autocomplete="off" class="form-inline">
+              <div class="form-group autocomplete">
+                <input id="search" type="text" name="search" class="form-control" placeholder="Şifrelerde Ara"
+                  data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">
               </div>
-            </div>
+            </form>
             <hr>
-            <div class="alert alert-info alert-dismissible collapse" role="alert" id="alert">
-              <p id="alert-p"></p>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Kapat">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="row mv1">
-              <div class="col-md">
-                <table class="table table-bordered">
-                  <thead class="thead-light">
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">İsim</th>
-                      <th scope="col">Uzunluk</th>
-                      <th scope="col">Rakam</th>
-                      <th scope="col">Sembol</th>
-                      <th scope="col">Büyük Harf</th>
-                      <th scope="col">Benzer Karakter</th>
-                      <th scope="col">Oluşturulduğu Tarih</th>
-                      <th scope="col">Güncellendiği Tarih</th>
-                      <th scope="col">Şifre</th>
-                      <th scope="col">Güncelle</th>
-                      <th scope="col">Sil</th>
-                    </tr>
-                  </thead>
-                  <tbody id="passwordTable">
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <hr>
+            <table class="table table-bordered">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">İsim</th>
+                  <th scope="col">Uzunluk</th>
+                  <th scope="col">Rakam</th>
+                  <th scope="col">Sembol</th>
+                  <th scope="col">Büyük Harf</th>
+                  <th scope="col">Benzer Karakter</th>
+                  <th scope="col">Oluşturulduğu Tarih</th>
+                  <th scope="col">Güncellendiği Tarih</th>
+                  <th scope="col">Şifre</th>
+                  <th scope="col">Güncelle</th>
+                  <th scope="col">Sil</th>
+                </tr>
+              </thead>
+              <tbody id="passwordTable">
+              </tbody>
+            </table>
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
                 <li class="page-item">
@@ -111,9 +94,9 @@
     <!-- Şifre Üretme Formu -->
     <div class="row">
       <div class="col-md mv1">
-        <div class="card">
-          <div class="card-header bg-success text-light">
-            Şifre Üretme Formu
+        <div class="card shadow">
+          <div class="card-header">
+            Şifre Oluştur
           </div>
           <div class="card-body">
             <form>
@@ -145,7 +128,7 @@
                 Şifre Üret
               </button>
               <button id="password-reset" type="button" class="btn btn-warning float-right" onclick="resetForm()">
-                Sıfırla
+                Formu Sıfırla
               </button>
             </form>
           </div>

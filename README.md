@@ -1,4 +1,7 @@
 # Passvault (TR)
+
+![Logo](https://github.com/ahmetkasif/passvault/blob/master/passvault-logo.png)
+
 Kişisel kullanım için tasarlanmış, isteğe göre farklı türlerde (liste 1'e bakınız) şifre üretimi ve tüm şifreleri tek bir yerel uygulamada saklama yeteneklerine sahip, çapraz platform masaüstü şifre yönetim sistemi. Bağımlılıklar liste 2'de gösterilmektedir.
 
 **[İndirme Linki](https://github.com/ahmetkasif/passvault/releases/download/v0.5.0/Passvault.Installer.exe)**
