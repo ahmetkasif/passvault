@@ -1,6 +1,6 @@
 {
   "name": "passvault",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Personal Password Generator &amp; Vault Intended to be Used in Local Desktop Systems",
   "main": "main.js",
   "scripts": {
@@ -64,7 +64,7 @@
     }
   },
   "devDependencies": {
-    "electron": "latest",
-    "electron-builder": "^20.28.1"
+    "electron": "^2.0.9",
+    "electron-builder": "^20.28.4"
   }
 }

@@ -1,5 +1,4 @@
 var $ = require('jquery');
-var shajs = require('sha.js');
 var moment = require('moment');
 var generator = require('generate-password');
 var alertify = require('alertifyjs');
@@ -7,8 +6,38 @@ var alertify = require('alertifyjs');
 moment.locale('tr');
 
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip()
 })
+
+function showPassword(index){
+    if(document.getElementById('show-password' + index).value == 0){
+        document.getElementById('show-password' + index).value = 1;
+        document.getElementById('show-password' + index).innerHTML = "<i class='fas fa-eye'><i/>";
+        document.getElementById('list-password-' + index).setAttribute('type', 'text');
+    } else {
+        document.getElementById('show-password' + index).value = 0;
+        document.getElementById('show-password' + index).innerHTML = "<i class='fas fa-eye-slash'><i/>";
+        document.getElementById('list-password-' + index).setAttribute('type', 'password');
+    }
+}
+
+function addPassword() {
+    var data = {};
+    data.name = document.getElementById("custom-password-name").value;
+    data.createdAt = moment().format('MMMM Do YYYY, h:mm:ss a');
+    data.updatedAt = moment().format('MMMM Do YYYY, h:mm:ss a');
+    data.password = document.getElementById("custom-password-value").value;
+
+    db.insert(data, function (err, newDoc) {
+        loadPasswords();
+        alertify.notify('Şifre başarıyla eklendi', 'success');
+    });
+}
+
+function updateDate() {
+    document.getElementById('current-date').innerHTML = "Tarih: " + moment().format('MMMM Do YYYY, h:mm:ss a');
+    setTimeout(function () { updateDate(); }, 1000);
+}
 
 alertify.defaults = {
     autoReset: true,
@@ -78,7 +107,6 @@ function createPassword() {
 
         if (docs.length == 0) {
             db.insert(data, function (err, newDoc) {
-                resetForm();
                 loadPasswords();
                 alertify.notify('Şifre başarıyla eklendi', 'success');
             });
@@ -86,27 +114,26 @@ function createPassword() {
             db.update({
                 name: data.name
             }, {
-                $set: {
-                    name: data.name,
-                    length: data.length,
-                    numbers: data.numbers,
-                    symbols: data.symbols,
-                    uppercase: data.uppercase,
-                    excludeSimilarCharacters: data.excludeSimilarCharacters,
-                    updatedAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
-                    password: data.password,
-                }
-            }, function (err, numReplaced) {
-                resetForm();
-                loadPasswords();
-                alertify.notify('Şifre başarıyla güncellendi', 'success');
-                document.getElementById("password-create").innerText = "Şifre Üret";
-            });
+                    $set: {
+                        name: data.name,
+                        length: data.length,
+                        numbers: data.numbers,
+                        symbols: data.symbols,
+                        uppercase: data.uppercase,
+                        excludeSimilarCharacters: data.excludeSimilarCharacters,
+                        updatedAt: moment().format('MMMM Do YYYY, h:mm:ss a'),
+                        password: data.password,
+                    }
+                }, function (err, numReplaced) {
+                    loadPasswords();
+                    alertify.notify('Şifre başarıyla güncellendi', 'success');
+                    document.getElementById("password-create").innerText = "Şifre Üret";
+                });
         }
     });
 };
 
-function updatePassword(id) {
+function updatePasswordForm(id) {
     db.findOne({
         _id: id
     }, function (err, doc) {
@@ -116,22 +143,7 @@ function updatePassword(id) {
         document.getElementById("password-type-symbols").checked = doc.symbols;
         document.getElementById("password-type-uppercase").checked = doc.uppercase;
         document.getElementById("password-type-simchar").checked = doc.excludeSimilarCharacters;
-        document.getElementById("password-create").innerText = "Şifreyi Güncelle";
-    });
-};
-
-function resetForm(id) {
-    db.findOne({
-        _id: id
-    }, function (err, doc) {
-        document.getElementById("password-name").value = "";
-        document.getElementById("password-length").value = "";
-        document.getElementById("password-type-numbers").checked = false;
-        document.getElementById("password-type-symbols").checked = false;
-        document.getElementById("password-type-uppercase").checked = false;
-        document.getElementById("password-type-simchar").checked = false;
-        alertify.notify('Form sıfırlandı', 'success');
-        document.getElementById("password-create").innerText = "Şifre Üret";
+        document.getElementById("password-create").innerHTML = "<i class='fas fa-sync'>";
     });
 };
 
@@ -147,6 +159,7 @@ function deletePassword(id) {
 function loadPasswords() {
     var i = 0;
     var data = '';
+
     db.find({}, function (err, docs) {
         docs.forEach(doc => {
             i = i + 1;
@@ -172,17 +185,36 @@ function loadPasswords() {
                 data += "<td scope='col'>İzin verildi</td>";
             data += "<td scope='col'>" + doc.createdAt + "</td>";
             data += "<td scope='col'>" + doc.updatedAt + "</td>";
-            data += "<td scope='col'>" + doc.password + "</td>";
-            data += "<td scope='col'><button type='button' class='btn btn-info' onclick=updatePassword('";
+            data += "<td scope='col'>" + "<div class='input-group mb-3'><input id='list-password-" + i + "' type='password' class='form-control' value='";
+            data += doc.password;
+            data += "' aria-describedby='password-icon'><div class='input-group-append'><button id='show-password" + i + "' class='input-group-text' onclick=showPassword(" + i + ")><i class='fas fa-eye-slash'><i/></button></div></td>";
+            data += "<td scope='col'><div class='btn-group' role='group'><button type='button' value='0' class='btn btn-sm btn-info' onclick=updatePasswordForm('";
             data += doc._id;
-            data += "')>Güncelle</button></td>";
-            data += "<td scope='col'><button type='button' class='btn btn-danger' onclick=deletePassword('";
+            data += "')><i class='fas fa-edit'></i></button>";
+            data += "<button type='button' class='btn btn-sm btn-danger' onclick=deletePassword('";
             data += doc._id;
-            data += "')>Sil</button></td>";
+            data += "')><i class='fas fa-eraser'></i></button></div></td>";
             data += "</tr>";
         });
+
+        // Generate password inline form
+        data += "<tr>" +
+            "<td>#</td>" +
+            "<td><input type='text' class='form-control' id='password-name' placeholder='Şifre Adı'></td>" +
+            "<td><input type='number' class='form-control' id='password-length' placeholder='Şifre Uzunluğu'></td>" +
+            "<td class='checkbox-padding'><input type='checkbox' class='control-input' id='password-type-numbers'></td>" +
+            "<td class='checkbox-padding'><input type='checkbox' class='control-input' id='password-type-symbols'></td>" +
+            "<td class='checkbox-padding'><input type='checkbox' class='control-input' id='password-type-uppercase'></td>" +
+            "<td class='checkbox-padding'><input type='checkbox' class='control-input' id='password-type-simchar'></td>" +
+            "<td class='checkbox-padding'>-</td>" +
+            "<td class='checkbox-padding'>-</td>" +
+            "<td class='checkbox-padding'>-</td>" +
+            "<td class='checkbox-padding'><button id='password-create' type='button' class='btn btn-sm btn-success' onclick='createPassword()'><i class='fas fa-check'></i></button></td>" +
+            "</tr>";
+
         document.getElementById("passwordTable").innerHTML = data;
     });
 };
 
+updateDate();
 loadPasswords();

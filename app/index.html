@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../assets/css/main.less">
   <link rel="stylesheet" href="../node_modules/alertifyjs/build/css/alertify.min.css" />
   <link rel="stylesheet" href="../node_modules/alertifyjs/build/css/themes/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <script src="../node_modules/alertifyjs/build/alertify.min.js"></script>
 </head>
 
@@ -22,7 +23,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <a class="nav-link" href="#">Passvault
             <span class="sr-only">(current)</span>
@@ -32,6 +33,9 @@
           <a class="nav-link" href="#" data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">Hakkında</a>
         </li>
       </ul>
+      <span class="navbar-text nav-link" id="current-date">
+        Tarih:
+      </span>
     </div>
   </nav>
   <div class="container-fluid">
@@ -41,12 +45,36 @@
         <div class="card shadow">
           <div class="card-header">Kayıtlı Şifreler</div>
           <div class="card-body">
-            <form autocomplete="off" class="form-inline">
-              <div class="form-group autocomplete">
-                <input id="search" type="text" name="search" class="form-control" placeholder="Şifrelerde Ara"
-                  data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav mr-auto">
+                  <div class="form-group">
+                    <input id="search" type="text" name="search" class="form-control" placeholder="Şifrelerde Ara"
+                      data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">
+                  </div>
+                </div>
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                      <a class="page-link" href="#" tabindex="-1">Önceki</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">Sonraki</a>
+                    </li>
+                  </ul>
+                </nav>
               </div>
-            </form>
+            </nav>
+
             <hr>
             <table class="table table-bordered">
               <thead class="thead-light">
@@ -61,76 +89,12 @@
                   <th scope="col">Oluşturulduğu Tarih</th>
                   <th scope="col">Güncellendiği Tarih</th>
                   <th scope="col">Şifre</th>
-                  <th scope="col">Güncelle</th>
-                  <th scope="col">Sil</th>
+                  <th scope="col">İşlemler</th>
                 </tr>
               </thead>
               <tbody id="passwordTable">
               </tbody>
             </table>
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-center">
-                <li class="page-item">
-                  <a class="page-link" href="#" tabindex="-1">Önceki</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">Sonraki</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Şifre Üretme Formu -->
-    <div class="row">
-      <div class="col-md mv1">
-        <div class="card shadow">
-          <div class="card-header">
-            Şifre Oluştur
-          </div>
-          <div class="card-body">
-            <form>
-              <div class="form-group">
-                <label for="password-name">Şifre Adı</label>
-                <input type="text" class="form-control" id="password-name" placeholder="Şifre Adı">
-              </div>
-              <div class="form-group">
-                <label for="password-length">Şifre Uzunluğu</label>
-                <input type="number" class="form-control" id="password-length" placeholder="Şifre Uzunluğu">
-              </div>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="password-type-numbers">
-                <label class="custom-control-label" for="password-type-numbers">Şifrede rakamlar da olsun.</label>
-              </div>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="password-type-symbols">
-                <label class="custom-control-label" for="password-type-symbols">Şifrede semboller de olsun.</label>
-              </div>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="password-type-uppercase">
-                <label class="custom-control-label" for="password-type-uppercase">Büyük harflere izin verilsin.</label>
-              </div>
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="password-type-simchar">
-                <label class="custom-control-label" for="password-type-simchar">Benzer karakterleri ekleme.</label>
-              </div>
-              <button id="password-create" type="button" class="btn btn-success float-right" onclick="createPassword()">
-                Şifre Üret
-              </button>
-              <button id="password-reset" type="button" class="btn btn-warning float-right" onclick="resetForm()">
-                Formu Sıfırla
-              </button>
-            </form>
           </div>
         </div>
       </div>
