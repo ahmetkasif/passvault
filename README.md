@@ -4,7 +4,7 @@
 
 Kişisel kullanım için tasarlanmış, isteğe göre farklı türlerde (liste 1'e bakınız) şifre üretimi ve tüm şifreleri tek bir yerel uygulamada saklama yeteneklerine sahip, çapraz platform masaüstü şifre yönetim sistemi. Bağımlılıklar liste 2'de gösterilmektedir.
 
-**[İndirme Linki](https://github.com/ahmetkasif/passvault/releases/download/v0.6.0/Passvault.Installer.exe)**
+**[İndirme Linki](https://github.com/ahmetkasif/passvault/releases/download/0.6.0/Passvault.Installer.exe)**
 
 ### Liste 1:
 * Sadece harfler
@@ -35,7 +35,7 @@ Proje geliştirilme aşamasındadır ve kullanıma uygun değildir. Her ne kadar
 
 Cross platform password management service which lets you create passwords in different types (look list 1 below) and stores them in local system in a secure way. Intended for personal usage. Dependencies shown in list 2.
 
-**[Download Here](https://github.com/ahmetkasif/passvault/releases/download/v0.6.0/Passvault.Installer.exe)**
+**[Download Here](https://github.com/ahmetkasif/passvault/releases/download/0.6.0/Passvault.Installer.exe)**
 
 ### List 1:
 * Letter only
