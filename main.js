@@ -1,9 +1,9 @@
 'use strict'
 
-const { app, BrowserWindow, globalShortcut } = require('electron')
-const os = require('os')
-const path = require('path')
-const config = require(path.join(__dirname, 'package.json'))
+const { app, BrowserWindow, globalShortcut } = require('electron');
+const os = require('os');
+const path = require('path');
+const config = require(path.join(__dirname, 'package.json'));
 
 app.setName(config.name)
 var window = null
