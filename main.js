@@ -9,8 +9,8 @@ app.setName(config.name)
 var window = null
 app.on('ready', function () {
   window = new BrowserWindow({
-    minWidth: 1330, 
-    minHeight: 760,
+    minWidth: 1280,
+    minHeight: 720,
     title: config.name,
     show: false,
     webPreferences: {
@@ -19,8 +19,8 @@ app.on('ready', function () {
     }
   })
 
-  window.loadURL(`file://${__dirname}/app/index.html`)
-
+  window.loadURL(`file://${__dirname}/app/index.html`);
+  
   let platform = os.platform()
   if (platform === 'darwin') {
     globalShortcut.register('Command+Option+I', () => {

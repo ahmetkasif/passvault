@@ -8,7 +8,7 @@
   <meta name="author" content="ahmetkasif">
   <title>Passvault</title>
   <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../assets/css/main.less">
+  <link rel="stylesheet" href="../assets/css/main.css">
   <link rel="stylesheet" href="../node_modules/alertifyjs/build/css/alertify.min.css" />
   <link rel="stylesheet" href="../node_modules/alertifyjs/build/css/themes/bootstrap.min.css" />
   <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.css">
@@ -30,7 +30,10 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">Hakkında</a>
+          <a class="nav-link disabled" href="#">Profil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">Hakkında</a>
         </li>
       </ul>
       <span class="navbar-text nav-link" id="current-date">
@@ -95,6 +98,66 @@
               <tbody id="passwordTable">
               </tbody>
             </table>
+          </div>
+        </div>
+        <!-- Login Modal -->
+        <div class="modal fade bd-example-modal-lg" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalCenterTitle"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="loginModalCenterTitle">Kimlik Doğrulama</h5>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="loginvaultpass">Şifre:</label>
+                    <input type="password" class="form-control" id="loginvaultpass" placeholder="Şifre">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-warning" onclick="quitApp()">Uygulamadan Çık</button>
+                <button type="button" class="btn disabled" data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">Şifremi Unuttum</button>
+                <button type="button" class="btn btn-primary" onclick="login()">Giriş Yap</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Signin Modal -->
+        <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalCenterTitle"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="signupModalCenterTitle">Yeni Kimlik Oluştur</h5>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="signupusername">Kullanıcı Adı:</label>
+                    <input type="text" class="form-control" id="signupusername" aria-describedby="usernameHelp"
+                      placeholder="Kullanıcı Adı">
+                  </div>
+                  <div class="form-group">
+                    <label for="signupemail">E-Posta Adresi:</label>
+                    <input type="email" class="form-control" id="signupemail" aria-describedby="emailHelp" placeholder="E-Posta">
+                  </div>
+                  <div class="form-group">
+                    <label for="signupvaultpass">Şifre:</label>
+                    <input type="password" class="form-control" id="signupvaultpass" placeholder="Şifre">
+                  </div>
+                  <div class="form-group">
+                    <label for="signuprevaultpass">Şifre (Tekrar):</label>
+                    <input type="password" class="form-control" id="signuprevaultpass" placeholder="Şifre">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-warning" onclick="quitApp()">Uygulamadan Çık</button>
+                <button type="button" class="btn btn-info float-right" onclick="signup()">Kaydet</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
