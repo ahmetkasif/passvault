@@ -15,7 +15,14 @@ var dataObject;
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
-})
+});
+
+$(document).keypress(
+    function (event) {
+        if (event.which == '13')
+            event.preventDefault();
+    }
+);
 
 alertify.defaults = {
     autoReset: true,
@@ -95,9 +102,10 @@ function login() {
         loadDisk(vaultpass);
         $('#loginModal').modal('hide');
         alertify.notify('Giriş yapıldı.', 'success');
-        loadPasswords();
+        loadPasswords('any');
     } catch (error) {
         alertify.notify('Şifrenizi yanlış girdiniz!', 'warning');
+        console.log(error);
     }
     return;
 }
@@ -115,11 +123,18 @@ function signup() {
 
         $('#signupModal').modal('hide');
         alertify.notify('Kayıt başarıyla tamamlandı', 'success');
-        loadPasswords();
+        loadPasswords('any');
     } else {
         alertify.notify('Şifreler uyuşmuyor', 'warning');
     }
     saveDisk();
+    return;
+}
+
+function autocomp() {
+    key = document.getElementById("search").value;
+    loadPasswords(key);
+
     return;
 }
 
@@ -190,7 +205,7 @@ function createPassword() {
             data.createdAt = dataObject.password.vault[i].createdAt;
             dataObject.password.vault[i] = data;
             saveDisk();
-            loadPasswords();
+            loadPasswords('any');
             alertify.notify('Şifre başarıyla güncellendi', 'success');
             return;
         }
@@ -201,7 +216,7 @@ function createPassword() {
     data.createdAt = moment().format('MMMM Do YYYY, h:mm:ss a');
     dataObject.password.lastID = dataObject.password.lastID + 1;
     dataObject.password.vault.push(data);
-    loadPasswords();
+    loadPasswords('any');
     saveDisk();
     alertify.notify('Şifre başarıyla eklendi', 'success');
     return;
@@ -232,7 +247,7 @@ function deletePassword(id) {
         if (dataObject.password.vault[i].id == id) {
             dataObject.password.vault.splice(i, 1);
             alertify.notify('Şifre başarıyla silindi', 'success');
-            loadPasswords();
+            loadPasswords('any');
             saveDisk();
             return;
         }
@@ -241,50 +256,52 @@ function deletePassword(id) {
     return;
 };
 
-function loadPasswords() {
+function loadPasswords(name, page) {
     var i = 0;
     var data = '';
 
     dataObject.password.vault.forEach(doc => {
         i = i + 1;
-        data += "<tr>";
-        data += "<td scope='col'>" + i + "</td>";
-        data += "<td scope='col'>" + doc.name + "</td>";
-        data += "<td scope='col'>" + doc.length + "</td>";
-        if (doc.numbers)
-            data += "<td scope='col'>Evet</td>";
-        else
-            data += "<td scope='col'>Hayır</td>";
-        if (doc.symbols)
-            data += "<td scope='col'>Evet</td>";
-        else
-            data += "<td scope='col'>Hayır</td>";
-        if (doc.uppercase)
-            data += "<td scope='col'>Var</td>";
-        else
-            data += "<td scope='col'>Yok</td>";
-        if (doc.excludeSimilarCharacters)
-            data += "<td scope='col'>Yasak</td>";
-        else
-            data += "<td scope='col'>İzin verildi</td>";
-        data += "<td scope='col'>" + doc.createdAt + "</td>";
-        data += "<td scope='col'>" + doc.updatedAt + "</td>";
-        data += "<td scope='col'>" + "<div class='input-group mb-3'><input id='list-password-" + i + "' type='password' class='form-control' value='";
-        data += doc.password;
-        data += "' aria-describedby='password-icon'><div class='input-group-append'><button id='show-password" + i + "' class='input-group-text' data-toggle='tooltip' data-placement='top' title='Göster / Gizle' onclick=showPassword(" + i + ")><i class='fas fa-eye-slash'><i/></button></div></td>";
-        data += "<td scope='col'><div class='btn-group' role='group'><button type='button' value='0' class='btn btn-sm btn-info' onclick=updatePasswordForm('";
-        data += doc.id;
-        data += "')><i class='fas fa-edit'></i></button>";
-        data += "<button type='button' class='btn btn-sm btn-danger' onclick=deletePassword('";
-        data += doc.id;
-        data += "')><i class='fas fa-eraser'></i></button></div></td>";
-        data += "</tr>";
+        if (name == 'any' || doc.name.includes(name)) {
+            data += "<tr>";
+            data += "<td scope='col'>" + i + "</td>";
+            data += "<td scope='col'>" + doc.name + "</td>";
+            data += "<td scope='col'>" + doc.length + "</td>";
+            if (doc.numbers)
+                data += "<td scope='col'>Evet</td>";
+            else
+                data += "<td scope='col'>Hayır</td>";
+            if (doc.symbols)
+                data += "<td scope='col'>Evet</td>";
+            else
+                data += "<td scope='col'>Hayır</td>";
+            if (doc.uppercase)
+                data += "<td scope='col'>Var</td>";
+            else
+                data += "<td scope='col'>Yok</td>";
+            if (doc.excludeSimilarCharacters)
+                data += "<td scope='col'>Yasak</td>";
+            else
+                data += "<td scope='col'>İzin verildi</td>";
+            data += "<td scope='col'>" + doc.createdAt + "</td>";
+            data += "<td scope='col'>" + doc.updatedAt + "</td>";
+            data += "<td scope='col'>" + "<div class='input-group mb-3'><input id='list-password-" + i + "' type='password' class='form-control' value='";
+            data += doc.password;
+            data += "' aria-describedby='password-icon'><div class='input-group-append'><button id='show-password" + i + "' class='input-group-text' data-toggle='tooltip' data-placement='top' title='Göster / Gizle' onclick=showPassword(" + i + ")><i class='fas fa-eye-slash'><i/></button></div></td>";
+            data += "<td scope='col'><div class='btn-group' role='group'><button type='button' value='0' class='btn btn-sm btn-info' onclick=updatePasswordForm('";
+            data += doc.id;
+            data += "')><i class='fas fa-edit'></i></button>";
+            data += "<button type='button' class='btn btn-sm btn-danger' onclick=deletePassword('";
+            data += doc.id;
+            data += "')><i class='fas fa-eraser'></i></button></div></td>";
+            data += "</tr>";
+        }
     });
 
     data += "<tr id='password-create-form'>" +
         "<td>#</td>" +
-        "<td><input type='text' class='form-control' id='password-name' placeholder='Şifre Adı'></td>" +
-        "<td><input type='number' class='form-control' id='password-length' placeholder='Uzunluk'></td>" +
+        "<td><input type='text' class='form-control' id='password-name' placeholder='Şifre Adı' required></td>" +
+        "<td><input type='number' class='form-control' id='password-length' placeholder='Uzunluk' value='8' required></td>" +
         "<td class='checkbox-padding'><input type='checkbox' class='control-input' id='password-type-numbers'></td>" +
         "<td class='checkbox-padding'><input type='checkbox' class='control-input' id='password-type-symbols'></td>" +
         "<td class='checkbox-padding'><input type='checkbox' class='control-input' id='password-type-uppercase'></td>" +

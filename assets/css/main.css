@@ -9,7 +9,7 @@ body{
 }
 
 .card-body{
-  padding: 1em !important;
+  padding: 0.75em !important;
 }
 
 .card-body hr {
@@ -57,6 +57,7 @@ body{
 
 tr th {
   vertical-align: middle !important;
+  text-align: center !important;
 }
 
 tr td {
