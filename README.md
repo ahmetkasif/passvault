@@ -4,7 +4,7 @@
 
 Kişisel kullanım için tasarlanmış, isteğe göre farklı türlerde [liste 1] şifre üretimi ve tüm şifreleri tek bir yerel uygulamada saklama yeteneklerine sahip, çoklu platform masaüstü şifre yönetim sistemi. Veriler kayıt esnasında AES ile şifrelenmekte, çalışma zamanında kullanıcının şifresiyle veriyi çözerek kullanmasına izin verilmektedir. Çalıştırmak için gerekli minimum ekran çözünürlüğü 1280x720 piksel olup, önerilen 1920x1080 piksellik bir ekranda kullanılmasıdır. Bağımlılıklar liste 2'de gösterilmektedir.
 
-**[İndirme Linki](https://github.com/ahmetkasif/passvault/releases/download/0.7.0/passvault.Setup.0.7.0.exe)**
+**[İndirme Linki](https://github.com/ahmetkasif/passvault/releases)**
 
 ### Liste 1:
 * Sadece harfler
@@ -34,7 +34,7 @@ Proje geliştirilme aşamasındadır ve kullanıma uygun değildir. Her ne kadar
 
 Cross platform password management service which lets you create passwords in different types (look list 1 below) and stores them in local system. All storage is encrypted and decryption happens on execution time using user's master password. Intended for personal usage. Dependencies are shown in list 2. Minimum use resolution is 1280x720 pixel.
 
-**[Download Here](https://github.com/ahmetkasif/passvault/releases/download/0.7.0/passvault.Setup.0.7.0.exe)**
+**[Download Here](https://github.com/ahmetkasif/passvault/releases)**
 
 ### List 1:
 * Letter only
