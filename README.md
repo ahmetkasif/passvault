@@ -2,7 +2,7 @@
 
 ![Logo](https://github.com/ahmetkasif/passvault/blob/master/passvault-logo.png)
 
-Kişisel kullanım için tasarlanmış, isteğe göre farklı türlerde [liste 1] şifre üretimi ve tüm şifreleri tek bir yerel uygulamada saklama yeteneklerine sahip, çoklu platform masaüstü şifre yönetim sistemi. Veriler kayıt esnasında AES ile şifrelenmekte, çalışma zamanında kullanıcının şifresiyle veriyi çözerek kullanmasına izin verilmektedir. Çalıştırmak için gerekli minimum ekran çözünürlüğü 1280x720 piksel olup, önerilen 1920x1080 piksellik bir ekranda kullanılmasıdır. Bağımlılıklar liste 2'de gösterilmektedir.
+Kişisel kullanım için tasarlanmış, isteğe göre farklı türlerde [liste 1] şifre üretimi ve tüm şifreleri tek bir yerel uygulamada saklama yeteneklerine sahip, çoklu platform masaüstü şifre yönetim sistemi. Veriler kayıt esnasında AES ile şifrelenmekte, çalışma zamanında kullanıcının şifresiyle veriyi çözerek kullanmasına izin verilmektedir. Şifreler, uygulama üzerinden JSON formatında dışarı veya içeri aktarılabilmektedir. Bağımlılıklar liste 2'de gösterilmektedir.
 
 **[İndirme Linki](https://github.com/ahmetkasif/passvault/releases)**
 
@@ -14,7 +14,7 @@ Kişisel kullanım için tasarlanmış, isteğe göre farklı türlerde [liste 1
 * Büyük harf kullanabilme özelliği
 * Sadece rakamlar (örn. PIN) (Şu anda mevcut değil)
 
-Proje geliştirilme aşamasındadır ve kullanıma uygun değildir. Her ne kadar tüm kaynaklar uygulama içerisinden sağlansa ve internet bağlantısı kurulmasa da, **her türlü sorumluluk kullanıcıya aittir**.
+Proje geliştirilme aşamasındadır. **Her türlü sorumluluk kullanıcıya aittir**.
 
 ### Liste 2:
 * electron
@@ -32,7 +32,7 @@ Proje geliştirilme aşamasındadır ve kullanıma uygun değildir. Her ne kadar
 
 # Passvault (EN)
 
-Cross platform password management service which lets you create passwords in different types (look list 1 below) and stores them in local system. All storage is encrypted and decryption happens on execution time using user's master password. Intended for personal usage. Dependencies are shown in list 2. Minimum use resolution is 1280x720 pixel.
+Multi platform password management service which lets you create passwords in different types (look list 1 below) and stores them in local system. All storage is encrypted and decryption happens on execution time using user's master password. Application supports exporting or importing passwords in JSON format. Dependencies are shown in list 2.
 
 **[Download Here](https://github.com/ahmetkasif/passvault/releases)**
 
@@ -44,7 +44,7 @@ Cross platform password management service which lets you create passwords in di
 * Ability to allow uppercase letters
 * Only numbers (e.g. PIN) (to be added)
 
-Project is under development and currently not production ready. **Any responsibility belongs to the user**.
+Project is under development. **Any responsibility belongs to the user**.
 
 ### List 2:
 * electron
