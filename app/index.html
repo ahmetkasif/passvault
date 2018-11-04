@@ -30,7 +30,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">Profil</a>
+          <a class="nav-link disabled" href="#">Ayarlar</a>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled" href="#" data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">Hakkında</a>
@@ -48,9 +48,17 @@
         <div class="card shadow">
           <div class="card-header">Kayıtlı Şifreler</div>
           <div class="card-body">
-            <nav class="navbar navbar-expand-lg navbar-light">
+            <nav class="navbar navbar-expand-lg navbar-light menu">
               <div class="form-group">
                 <input id="search" type="text" class="form-control" placeholder="Şifrelerde Ara" onkeyup="autocomp();">
+              </div>
+              <div class="form-group">
+                <button name='export-passwords' type='button' class='btn btn-sm btn-warning' onclick='exportPasswords()'>
+                  Dışarı aktar <i class='fas fa-upload'></i>
+                </button>
+                <button name='export-passwords' type='button' class='btn btn-sm btn-info' onclick='importPasswords()'>
+                  İçeri aktar <i class='fas fa-download'></i>
+                </button>
               </div>
             </nav>
             <hr>

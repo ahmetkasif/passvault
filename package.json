@@ -1,6 +1,6 @@
 {
   "name": "passvault",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Personal Password Generator &amp; Vault Intended to be Used in Local Desktop Systems",
   "main": "main.js",
   "scripts": {
@@ -21,11 +21,11 @@
   },
   "homepage": "https://github.com/ahmetkasif/passvault#readme",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.4.0",
-    "alertifyjs": "^1.11.1",
+    "@fortawesome/fontawesome-free": "^5.5.0",
+    "alertifyjs": "^1.11.2",
     "bootstrap": "^4.1.3",
     "crypto-js": "^3.1.9-1",
-    "generate-password": "^1.4.0",
+    "generate-password": "^1.4.1",
     "jquery": "^3.3.1",
     "moment": "^2.22.2",
     "popper.js": "^1.14.4"
@@ -64,6 +64,6 @@
   },
   "devDependencies": {
     "electron": "3.0.0",
-    "electron-builder": "^20.28.4"
+    "electron-builder": "^20.31.2"
   }
 }

@@ -13,6 +13,7 @@ app.on('ready', function () {
     minHeight: 720,
     title: config.name,
     show: false,
+    icon: 'icon.ico',
     webPreferences: {
       nodeIntegration: true,
       defaultEncoding: 'UTF-8'

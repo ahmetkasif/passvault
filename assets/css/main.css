@@ -64,8 +64,20 @@ tr td {
   vertical-align: middle !important;
 }
 
+td .btn-group{
+  width: 100%;
+}
+
+td .btn-group button{
+  margin: auto!important;
+}
+
 .checkbox-padding .control-input{
   width: 20px !important;
   height: 20px !important;
   vertical-align: middle;
+}
+
+.menu{
+  justify-content: space-between!important;
 }

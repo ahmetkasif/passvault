@@ -7,6 +7,8 @@ const path = require('path');
 const fs = require('fs');
 const CryptoJS = require("crypto-js");
 const userDataPath = (electron.app || electron.remote.app).getPath('userData');
+const remote = require('electron').remote;
+const dialog = require('electron').remote.dialog;
 
 moment.locale('tr');
 
@@ -46,7 +48,7 @@ alertify.defaults = {
 
     notifier: {
         delay: 3,
-        position: 'top-left',
+        position: 'bottom-left',
         closeButton: true
     },
 
@@ -160,16 +162,30 @@ function loadDisk(vaultpass) {
     return;
 }
 
-function showPassword(index) {
-    if (document.getElementById('show-password' + index).value == 0) {
-        document.getElementById('show-password' + index).value = 1;
-        document.getElementById('show-password' + index).innerHTML = "<i class='fas fa-eye'><i/>";
-        document.getElementById('list-password-' + index).setAttribute('type', 'text');
-    } else {
-        document.getElementById('show-password' + index).value = 0;
-        document.getElementById('show-password' + index).innerHTML = "<i class='fas fa-eye-slash'><i/>";
-        document.getElementById('list-password-' + index).setAttribute('type', 'password');
+function showPassword(type, index) {
+    if (type == 1) {
+        if (document.getElementById('show-password' + index).value == 0) {
+            document.getElementById('show-password' + index).value = 1;
+            document.getElementById('show-password' + index).innerHTML = "<i class='fas fa-eye'><i/>";
+            document.getElementById('list-password-' + index).setAttribute('type', 'text');
+        } else {
+            document.getElementById('show-password' + index).value = 0;
+            document.getElementById('show-password' + index).innerHTML = "<i class='fas fa-eye-slash'><i/>";
+            document.getElementById('list-password-' + index).setAttribute('type', 'password');
+        }
+        return;
     }
+
+    if (document.getElementById('show-custom-password').value == 0) {
+        document.getElementById('show-custom-password').value = 1;
+        document.getElementById('show-custom-password').innerHTML = "<i class='fas fa-eye'><i/>";
+        document.getElementById('custom-password-value').setAttribute('type', 'text');
+    } else {
+        document.getElementById('show-custom-password').value = 0;
+        document.getElementById('show-custom-password').innerHTML = "<i class='fas fa-eye-slash'><i/>";
+        document.getElementById('custom-password-value').setAttribute('type', 'password');
+    }
+
     return;
 }
 
@@ -178,6 +194,74 @@ function updateDate() {
     setTimeout(function () {
         updateDate();
     }, 1000);
+}
+
+function exportPasswords() {
+    // You can obviously give a direct path without use the dialog (C:/Program Files/path/myfileexample.txt)
+    var filename = 'C:/Program Files/';
+    dialog.showSaveDialog({ options: ['title', 'openDirectory'] }, (fileName) => {
+        if (fileName === undefined) {
+            console.log("You didn't save the file");
+            return;
+        }
+
+        // fileName is a string that contains the path and filename created in the save file dialog.  
+        fs.writeFile(fileName, JSON.stringify(dataObject), (err) => {
+            if (err) {
+                alertify.notify('Hata: ' + err.message, 'danger');
+                return;
+            }
+            alertify.notify('Şifreler başarıyla dışarı aktarıldı.', 'success');
+        });
+    });
+
+    return;
+}
+
+function importPasswords() {
+    dialog.showOpenDialog({ properties: ['openFile'] }, (filepath) => {
+        if (filepath === undefined) {
+            alertify.notify('Dosya seçilmedi!', 'warning');
+            return;
+        }
+
+        fs.readFile(filepath[0], 'utf-8', (err, data) => {
+            if (err) {
+                alert("An error ocurred reading the file :" + err.message);
+                return;
+            }
+
+            alertify.notify('Şifreler başarıyla içe aktarıldı', 'success');
+            dataObject = JSON.parse(data);
+            loadPasswords('any');
+            saveDisk();
+        });
+    });
+
+    return;
+}
+
+function addCustomPassword() {
+    var data = {};
+
+    data.name = document.getElementById("custom-password-name").value;
+    data.password = document.getElementById("custom-password-value").value;
+    data.length = data.password.toString().length;
+    data.numbers = false;
+    data.symbols = false;
+    data.uppercase = false;
+    data.excludeSimilarCharacters = false;
+    data.createdAt = moment().format('MMMM Do YYYY, h:mm:ss a');
+    data.updatedAt = moment().format('MMMM Do YYYY, h:mm:ss a');
+
+    // Saving custom password
+    data.id = dataObject.password.lastID;
+    dataObject.password.lastID = dataObject.password.lastID + 1;
+    dataObject.password.vault.push(data);
+    loadPasswords('any');
+    saveDisk();
+    alertify.notify('Eski şifre başarıyla eklendi', 'success');
+    return;
 }
 
 function createPassword() {
@@ -206,21 +290,21 @@ function createPassword() {
             dataObject.password.vault[i] = data;
             saveDisk();
             loadPasswords('any');
-            alertify.notify('Şifre başarıyla güncellendi', 'success');
+            alertify.notify('Şifre başarıyla güncellendi.', 'success');
             return;
         }
     }
 
-    // Creating password
+    // Saving password
     data.id = dataObject.password.lastID;
     data.createdAt = moment().format('MMMM Do YYYY, h:mm:ss a');
     dataObject.password.lastID = dataObject.password.lastID + 1;
     dataObject.password.vault.push(data);
     loadPasswords('any');
     saveDisk();
-    alertify.notify('Şifre başarıyla eklendi', 'success');
+    alertify.notify('Şifre başarıyla oluşturuldu.', 'success');
     return;
-};
+}
 
 function updatePasswordForm(id) {
     for (var i = 0; i < dataObject.password.vault.length; i++) {
@@ -240,7 +324,7 @@ function updatePasswordForm(id) {
         }
     }
     return;
-};
+}
 
 function deletePassword(id) {
     for (var i = 0; i < dataObject.password.vault.length; i++) {
@@ -254,9 +338,9 @@ function deletePassword(id) {
     }
     alertify.notify('Bir hata oluştu', 'warning');
     return;
-};
+}
 
-function loadPasswords(name, page) {
+function loadPasswords(name) {
     var i = 0;
     var data = '';
 
@@ -285,9 +369,9 @@ function loadPasswords(name, page) {
                 data += "<td scope='col'>İzin verildi</td>";
             data += "<td scope='col'>" + doc.createdAt + "</td>";
             data += "<td scope='col'>" + doc.updatedAt + "</td>";
-            data += "<td scope='col'>" + "<div class='input-group mb-3'><input id='list-password-" + i + "' type='password' class='form-control' value='";
+            data += "<td scope='col'>" + "<div class='input-group'><input id='list-password-" + i + "' type='password' class='form-control' value='";
             data += doc.password;
-            data += "' aria-describedby='password-icon'><div class='input-group-append'><button id='show-password" + i + "' class='input-group-text' data-toggle='tooltip' data-placement='top' title='Göster / Gizle' onclick=showPassword(" + i + ")><i class='fas fa-eye-slash'><i/></button></div></td>";
+            data += "' aria-describedby='password-icon'><div class='input-group-append'><button id='show-password" + i + "' class='input-group-text' data-toggle='tooltip' data-placement='top' title='Göster / Gizle' onclick=showPassword(" + 1 + "," + i + ")><i class='fas fa-eye-slash'><i/></button></div></td>";
             data += "<td scope='col'><div class='btn-group' role='group'><button type='button' value='0' class='btn btn-sm btn-info' onclick=updatePasswordForm('";
             data += doc.id;
             data += "')><i class='fas fa-edit'></i></button>";
@@ -298,10 +382,11 @@ function loadPasswords(name, page) {
         }
     });
 
+    // Password generate form
     data += "<tr id='password-create-form'>" +
         "<td>#</td>" +
         "<td><input type='text' class='form-control' id='password-name' placeholder='Şifre Adı' required></td>" +
-        "<td><input type='number' class='form-control' id='password-length' placeholder='Uzunluk' value='8' required></td>" +
+        "<td><input type='number' class='form-control' id='password-length' placeholder='Uzunluk' required></td>" +
         "<td class='checkbox-padding'><input type='checkbox' class='control-input' id='password-type-numbers'></td>" +
         "<td class='checkbox-padding'><input type='checkbox' class='control-input' id='password-type-symbols'></td>" +
         "<td class='checkbox-padding'><input type='checkbox' class='control-input' id='password-type-uppercase'></td>" +
@@ -309,12 +394,35 @@ function loadPasswords(name, page) {
         "<td id='password-createdat' class='checkbox-padding'>-</td>" +
         "<td id='password-updatedat' class='checkbox-padding'>-</td>" +
         "<td class='checkbox-padding'>-</td>" +
-        "<td class='checkbox-padding'><button name='password-create' type='button' class='btn btn-sm btn-success' data-toggle='tooltip' data-placement='top' title='Oluştur' onclick='createPassword()'><i class='fas fa-check'></i></button></td>" +
+        "<td><div class='btn-group' role='group'>" +
+        "</button><button name='password-create' type='button' class='btn btn-sm btn-success' data-toggle='tooltip' data-placement='top' title='Şifre Oluştur' onclick='createPassword()'><i class='fas fa-check'></i></button>" +
+        "</div></td>" +
+        "</tr>";
+
+    // Custom password form
+    data += "<tr id='password-create-form'>" +
+        "<td>#</td>" +
+        "<td><input type='text' class='form-control' id='custom-password-name' placeholder='Özel Şifre Adı' required></td>" +
+        "<td><div class='input-group'>" +
+        "<input type='password' class='form-control' id='custom-password-value' placeholder='Şifre' required>" +
+        "<div class='input-group-append'>" +
+        "<button id='show-custom-password' class='input-group-text' data-toggle='tooltip' data-placement='top' title='Göster / Gizle' onclick=showPassword(0)>" +
+        "<i class='fas fa-eye-slash'><i/></button></div></div>"+
+        "</td>" +
+        "<td class='checkbox-padding'>-</td>" +
+        "<td class='checkbox-padding'>-</td>" +
+        "<td class='checkbox-padding'>-</td>" +
+        "<td class='checkbox-padding'>-</td>" +
+        "<td class='checkbox-padding'>-</td>" +
+        "<td class='checkbox-padding'>-</td>" +
+        "<td class='checkbox-padding'>-</td>" +
+        "<td><div class='btn-group text-center' role='group'>" +
+        "<button name='custom-password' type='button' class='btn btn-sm btn-warning' data-toggle='tooltip' data-placement='top' title='Eski Şifre Gir' onclick='addCustomPassword()'><i class='fas fa-save'></i>" +
+        "</div></td>" +
         "</tr>";
 
     document.getElementById("passwordTable").innerHTML = data;
     return;
-};
-
+}
 
 initialize();
