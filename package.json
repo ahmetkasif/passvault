@@ -21,14 +21,14 @@
   },
   "homepage": "https://github.com/ahmetkasif/passvault#readme",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.5.0",
-    "alertifyjs": "^1.11.2",
+    "@fortawesome/fontawesome-free": "^6.4.2",
+    "alertifyjs": "^1.13.1",
     "bootstrap": "^4.3.1",
-    "crypto-js": "^3.1.9-1",
-    "generate-password": "^1.4.1",
-    "jquery": "^3.4.0",
-    "moment": "^2.24.0",
-    "popper.js": "^1.14.7"
+    "crypto-js": "^4.2.0",
+    "generate-password": "^1.7.1",
+    "jquery": "^3.7.1",
+    "moment": "^2.29.4",
+    "popper.js": "^1.16.1"
   },
   "standard": {
     "globals": [
