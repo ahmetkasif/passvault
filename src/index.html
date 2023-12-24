@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="tr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Personal Password Generator & Vault for Local Desktop Systems">
+        <meta name="author" content="ahmetkasif">
+        <title>Passvault</title>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <!-- navbar  -->
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Passvault <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="aboutToggler" data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">Hakkında</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- Şifreler Tablosu -->
+            <div class="row">
+                <div class="col-md mv1">
+                    <div class="card shadow">
+                        <div class="card-header">Kayıtlı Şifreler</div>
+                        <div class="card-body">
+                            <nav class="navbar navbar-expand-lg navbar-light menu">
+                                <div class="form-group row g-2 align-items-center">
+                                    <div class="col-auto">
+                                        <input id="search" type="text" class="form-control" placeholder="Ara">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button name='export-passwords' type='button' class='btn btn-sm btn-info' id='opencreatePWModal'> Şifre Oluştur <i class="fa-solid fa-key"></i></i></button>
+                                        <button name='export-passwords' type='button' class='btn btn-sm btn-info' id='opencustomPWModal'> Şifre Ekle <i class="fa-solid fa-unlock"></i></i></button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button name='export-passwords' type='button' class='btn btn-sm btn-warning' id='exportPasswords'> Dışarı aktar <i class='fas fa-upload'></i></button>
+                                    <button name='export-passwords' type='button' class='btn btn-sm btn-info' id='importPasswords'> İçeri aktar <i class='fas fa-download'></i></button>
+                                </div>
+                            </nav>
+                            <hr>
+                            <table class="table table-bordered">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">İsim</th>
+                                        <th scope="col">Uzunluk</th>
+                                        <th scope="col">Rakam</th>
+                                        <th scope="col">Sembol</th>
+                                        <th scope="col">Büyük Harf</th>
+                                        <th scope="col">Benzer Karakter</th>
+                                        <th scope="col">Oluşturulduğu Tarih</th>
+                                        <th scope="col">Güncellendiği Tarih</th>
+                                        <th scope="col">Şifre</th>
+                                        <th scope="col">İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="passwordTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Login Modal -->
+                    <div class="modal fade bd-example-modal-lg" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="loginModalCenterTitle">Kimlik Doğrulama</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="loginvaultpass">Şifre:</label>
+                                            <input type="password" class="form-control" id="loginvaultpass" placeholder="Şifre">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" id="closeWindowLog">Uygulamadan Çık</button>
+                                    <button type="button" class="btn disabled" data-toggle="tooltip" data-placement="top" title="Henüz eklenmedi">Şifremi Unuttum</button>
+                                    <button type="button" class="btn btn-info" id="login">Giriş Yap</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Signin Modal -->
+                    <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="signupModalCenterTitle">Yeni Kimlik Oluştur</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="signupusername">Kullanıcı Adı:</label>
+                                            <input type="text" class="form-control" id="signupusername" aria-describedby="usernameHelp" placeholder="Kullanıcı Adı" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="signupemail">E-Posta Adresi:</label>
+                                            <input type="email" class="form-control" id="signupemail" aria-describedby="emailHelp" placeholder="E-Posta" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="signupvaultpass">Şifre:</label>
+                                            <input type="password" class="form-control" id="signupvaultpass" placeholder="Şifre" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="signuprevaultpass">Şifre (Tekrar):</label>
+                                            <input type="password" class="form-control" id="signuprevaultpass" placeholder="Şifre" required>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" id="closeWindowReg">Uygulamadan Çık</button>
+                                    <button type="button" class="btn btn-info float-right" id="register">Kaydet</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- About Modal -->
+                    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="aboutModalCenterTitle">Hakkında</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Passvault</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">Secure Password Storage</h6>
+                                            <p class="card-text">Kişisel kullanım için tasarlanmıştır. İsteğe göre farklı türlerde şifre üretebilme ve kullanıcının diğer tüm şifrelerini tek bir uygulamada saklama yeteneğine sahip, masaüstü şifre yönetim sistemidir. Şifre bilgileri kayıt esnasında AES ile şifrelenmekte, oturum açma anında merkezi şifre ile çözülerek kullanıma suunlmaktadır. Şifreler, uygulama üzerinden JSON formatında dışarı veya içeri aktarılabilmektedir.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info float-right" id="closeAbout">Devam Et</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Create Password Modal -->
+                    <div class="modal fade" id="createPWModal" tabindex="-1" role="dialog" aria-labelledby="createPWModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="createPWModalCenterTitle">Şifre Oluştur</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="password-name">Şifre Adı:</label>
+                                            <input type='text' class='form-control' id='password-name' placeholder='Şifre Adı' required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password-length">Uzunluk:</label>
+                                            <input type='number' class='form-control' id='password-length' placeholder='Uzunluk' required>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label" for="password-type-numbers">Rakam</label>
+                                            <input type='checkbox' class='form-check-input' id='password-type-numbers'>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label" for="password-type-symbols">Sembol</label>
+                                            <input type='checkbox' class='form-check-input' id='password-type-symbols'>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label" for="password-type-uppercase">Büyük Harfler</label>
+                                            <input type='checkbox' class='form-check-input' id='password-type-uppercase'>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <label class="form-check-label" for="password-type-simchar">Benzer Karakterler</label>
+                                            <input type='checkbox' class='form-check-input' id='password-type-simchar'>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info float-right" id="createPassword">Kaydet</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Custom Password Modal -->
+                    <div class="modal fade" id="customPWModal" tabindex="-1" role="dialog" aria-labelledby="customPWModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="createPWModalCenterTitle">Şifre Ekle</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="custom-password-name">Şifre Adı</label>
+                                            <input type='text' class='form-control' id='custom-password-name' placeholder='Şifre Adı' required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="custom-password-value">Şifre</label>
+                                            <div class="input-group">
+                                                <input type='password' class='form-control' id='custom-password-value' placeholder='Şifre' required>
+                                                <button id='show-custom-password' class='input-group-text' data-toggle='tooltip' data-placement='top' title='Göster / Gizle' disabled>
+                                                    <i class="fa-solid fa-eye-slash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info float-right" id="customPassword">Kaydet</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
